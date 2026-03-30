@@ -128,14 +128,15 @@ def validate_input_student_program(user_input):
     return user_input.strip()
 
 def validate_input_student_status(user_input):
-    # Start a loop that continues while the input is empty
-    while user_input.strip() == "":
-        # Tell user that student status cannot be empty
-        print("ERROR: Student status cannot be empty. Please enter a valid student status.")
-        # Ask user to enter the student status again
-        user_input = input("Enter the status of the Student: (y== for active, n== for inactive)")
-    # Return the student staus after removing extra whitespace
-    return user_input.strip()
+    validator = True
+    while validator:
+        if user_input == "a" or user_input == "i":
+            validator = False
+            return user_input
+        else:
+            print("ERROR: Student status input is not valid. Please enter a valid student status.")
+            user_input = input("Enter the status of the Student: (a== for active, i== for inactive: ").lower()
+            
 
 def add_student():
     # Create an empty dictionary to hold the new student
@@ -164,7 +165,7 @@ def add_student():
         program = validate_input_student_program(program)
         
         # Ask user to enter the student status
-        status = input("Enter the student status: (y== for active, n== for inactive): ")
+        status = input("Enter the status of the Student: ('a' -> for active, or 'i' -> for inactive: ").lower()
         # Validate the status to ensure it is valid
         status = validate_input_student_status(status)
         
@@ -187,10 +188,9 @@ def add_student():
         # Display the current list of items to be saved (for debugging)
         for key, student in student_added_to_saved.items():
             print("---------------------------------------------------------")
-            print(f"student to save: {student['name']}, id: {student['id']}, age: {student['age']}, program: {student['program']}, status: {student['status']}")
+            print(f"Student to save: {student['name']}, id: {student['id']}, age: {student['age']}, program: {student['program']}, status: {student['status']}")
         # Tell user that the student was added successfully
-        print("student added successfully")
-        print(students_for_csv)
+        print("Student added successfully.")
         print("---------------------------------------------------------")
         # Exit the function
         return
@@ -207,7 +207,7 @@ def print_students():
     # Print a divider line for visual separation
     print("---------------------------------------------------------")
     # Print a header message
-    print("Here are your studetns list")
+    print("Here are your students list")
     # Loop through each student in the dict
     for student, details in total_student.items():
         # Print the student ID
@@ -227,115 +227,137 @@ def print_students():
     return
 
 def search_students():
-    # Ask user to enter the id of the student they want to find
-    id_to_search = int(input("Please input the id of the student to search: "))
-    # Try to find the student in the students dictionary
-    student_info = students.get(id_to_search)
-    # Check if the student was found
-    if student_info:
-        # Print a header for the student information
-        print("---------------------------------------------------------")
-        print(f"Student's Information: ")
-        # Print the ID
-        print(f"Id: {student_info['id']}")
-        # Print the student name
-        print(f"Name: {student_info['name']}")
-        # Print the student age
-        print(f"Age: {student_info['age']}")
-        # Print the student program
-        print(f"program: {student_info['program']}")
-        # Print the student status
-        print(f"status: {student_info['status']}")
-        # Print a divider line
-        print("---------------------------------------------------------")
-    # If student was not found
-    else:
-        # Tell user that the student does not exist
-        print(f"The student '{id_to_search}' is not found, please try again.")
-        # Print a divider line
-        print("---------------------------------------------------------")
-    return
+    validador = True
+    
+    while validador:
+        try:
+            # Ask user to enter the id of the student they want to find
+            id_to_search = int(input("Please input the id of the student to search: "))
+            # Try to find the student in the students dictionary
+            student_info = students.get(id_to_search)
+            # Check if the student was found
+            if student_info:
+                # Print a header for the student information
+                print("---------------------------------------------------------")
+                print(f"Student's Information: ")
+                # Print the ID
+                print(f"Id: {student_info['id']}")
+                # Print the student name
+                print(f"Name: {student_info['name']}")
+                # Print the student age
+                print(f"Age: {student_info['age']}")
+                # Print the student program
+                print(f"program: {student_info['program']}")
+                # Print the student status
+                print(f"status: {student_info['status']}")
+                # Print a divider line
+                print("---------------------------------------------------------")
+                validador = False
+            # If student was not found
+            else:
+                # Tell user that the student does not exist
+                print(f"The student '{id_to_search}' is not found, please try again.")
+                # Print a divider line
+                validador = False
+                print("---------------------------------------------------------")
+        except ValueError:
+            print("ERROR: Please enter a valid numeric value for id.")
 
 def update_students():
-    # Ask user to enter the id of the student they want to find
-    id_to_search = int(input("Please input the id of the student to update: "))
-    # Try to find the student in the students dictionary
-    student_info = students.get(id_to_search)
+    validador = True
     
-    # Check if the product was not found
-    if not student_info:
-        # Tell user that the student was not found
-        print(f" Student '{student_info['name']}' not found.")
-        # Exit the function
-        return
-    
-    # Print current product information
-    print(f"\nUpdate: {student_info['id']}, name: {student_info['name']}, age: {student_info['age']}, program: {student_info['program']}, status: {student_info['status']})")
-    # Print option 1 to change the name
-    print("1. Change Name")
-    # Print option 2 to change the age
-    print("2. Change Age")
-    # Print option 3 to change Program
-    print("3. Change Program")
-    # Print option 4 to change Status
-    print("4. Change Status")
-    
-    # Ask user which update option they want to choose
-    option = input("Choose an option: ")
-
-    # Check if user chose option 1
-    if option == "1":
-        # Ask for new name and update it
-        student_info["name"] = input("New name: ")
-    # Check if user chose option 2
-    elif option == "2":
-        # Ask for new age quantity and update it
-        student_info["age"] = int(input("New Age: "))
-    # Check if user chose option 3
-    elif option == "3":
-        # Ask for new program and update it
-        student_info["program"] = input("New program: ")
-    elif option == "4":
-        # Ask for new status quantity and update it
-        student_info["status"] = input("New Status: ")
-    # Handle invalid option
-    else:
-        # Tell user they selected an invalid option
-        print("Invalid option.")
+    while validador:    
         
-    # Tell user that the update was successful
-    print(" Update successful.")
-    # Exit the function
-    return
+        try:  
+            # Ask user to enter the id of the student they want to find
+            id_to_search = int(input("Please input the id of the student to update: "))
+            # Try to find the student in the students dictionary
+            student_info = students.get(id_to_search)
+            if not student_info:
+                # Tell user that the student does not exist
+                print("The student does not exist.")
+                validador = False
+                continue
+            # Print current product information
+            print(f"\nUpdate: {student_info['id']}, name: {student_info['name']}, age: {student_info['age']}, program: {student_info['program']}, status: {student_info['status']})")
+            # Print option 1 to change the name
+            print("1. Change Name")
+            # Print option 2 to change the age
+            print("2. Change Age")
+            # Print option 3 to change Program
+            print("3. Change Program")
+            # Print option 4 to change Status
+            print("4. Change Status")
+            
+            # Ask user which update option they want to choose
+            option = input("Choose an option: ")
+
+            # Check if user chose option 1
+            if option == "1":
+                # Ask for new name and update it
+                student_info["name"] = input("New name: ")
+            # Check if user chose option 2
+            elif option == "2":
+                # Ask for new age quantity and update it
+                student_info["age"] = int(input("New Age: "))
+            # Check if user chose option 3
+            elif option == "3":
+                # Ask for new program and update it
+                student_info["program"] = input("New program: ")
+            elif option == "4":
+                # Ask for new status quantity and update it
+                student_info["status"] = input("New Status: ")
+            # Handle invalid option
+            else:
+                # Tell user they selected an invalid option
+                print("Invalid option.")
+                
+            # Tell user that the update was successful
+            print("Update successful.")
+            validador= False
+            # Exit the function
+            return
+        except ValueError:
+            print("ERROR: Please enter a valid numeric value for id.")
 
 def delete_students():
-    # Ask user to enter the ID of the student they want to delete
-    id = int(input("Enter the id of the student you wish to delete: "))
-    # Check if the product exists in the inventory
-    if id in students:
-        # Ask user to confirm they want to delete the student
-        confirmar = input(f" Are you sure you want to delete '{id}'? (Yes/No): ").lower()
+    validator = True
+     
+    while validator:
+        try:
         
-        # Check if user confirmed by typing 'yes'
-        if confirmar == 'yes':
-            # Remove the student from the students dictionary
-            del students[id]
-            # Tell user that the student was deleted successfully
-            print(f" The student '{id}' has been successfully deleted.")
-            # Exit the function
-            return
-        # If user did not confirm
-        else:
-            # Tell user that the operation was cancelled
-            print(" Operation cancelled by the user")
-            # Exit the function
-            return
-    # If the student does not exist in students
-    else:
-        # Tell user that the studend was not found
-        print(f" Error: The student '{id}' does not exist in the system.")
-        # Exit the function
-        return
+            # Ask user to enter the ID of the student they want to delete
+            id = int(input("Enter the id of the student you wish to delete: "))
+            # Check if the product exists in the inventory
+            if id in students:
+                # Ask user to confirm they want to delete the student
+                confirmar = input(f" Are you sure you want to delete '{id}'? (Yes/No): ").lower()  
+                # Check if user confirmed by typing 'yes'
+                if confirmar == 'yes':
+                    # Remove the student from the students dictionary
+                    del students[id]
+                    # Tell user that the student was deleted successfully
+                    print(f" The student '{id}' has been successfully deleted.")
+                    # Exit the function
+                    validator = False
+                    return
+                # If user did not confirm
+                else:
+                    # Tell user that the operation was cancelled
+                    print(" Operation cancelled by the user")
+                    validator = False
+                    # Exit the function
+                    return
+            # If the student does not exist in students
+            else:
+                # Tell user that the studend was not found
+                print(f" Error: The student '{id}' does not exist in the system.")
+                validator = False
+                # Exit the function
+                return
+        except ValueError:
+            print("ERROR: Please enter a valid numeric value for id.")
+
 
 def send_csv():
     for student in students:

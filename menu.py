@@ -1,7 +1,6 @@
 from features import students
 import features
 
-
 def menu():
     validator = True
     # Print a line of equals signs for visual separation
