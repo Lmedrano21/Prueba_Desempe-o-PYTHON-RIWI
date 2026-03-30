@@ -1,9 +1,10 @@
-
+from features import students
+import features
 
 
 def menu():
     validator = True
-        # Print a line of equals signs for visual separation
+    # Print a line of equals signs for visual separation
     print("=" * 40)
     # Print the menu title
     print("                 Menu")
@@ -19,44 +20,52 @@ def menu():
     print("4. Update a student")
     # Display option 5: Remove a student from system
     print("5- Delete a student")
-    # Display option 6: Close the program
-    print("6- Exit")
+    # Display option 6: Save to CSV
+    print("6- Save to CSV")
+    # Display option 7: Close the program
+    print("7- Exit")
     # Print another line of equals signs for visual separation
     print("=" * 40)
     # Print a blank line for spacing
     print()
     # Start a loop that continues while validator is True
+    
     while validator:
-        # Ask user to enter their choice and convert it to an integer
         
+        # Ask user to enter their choice and convert it to an integer
         try:
             print("---------------------------------------------------------")
             Ejecucion = int(input("Choose an option: "))
         except ValueError:
             print("Please enter a valid option.")
             continue
+        
+        
         # Check if user chose option 1
         if Ejecucion == 1:
             # Call the add_product function to add a new product
-            print("funtion add new student here")
+            features.add_student()
         # Check if user chose option 2
         elif Ejecucion == 2:
             # Call the inventory_print function to display all products
-            features_.inventory_print()
+            features.print_students()
+            #print_students()
         # Check if user chose option 3
         elif Ejecucion == 3:
             # Call the search_producto function to find a specific product
-            features_.search_producto()
+            features.search_students()
+            #features_.search_producto()
         # Check if user chose option 4
         elif Ejecucion == 4:
-            # Call the product_update function to modify a product
-            features_.product_update()
+            features.update_students()
         # Check if user chose option 5
         elif Ejecucion == 5:
             # Call the product_delete function to remove a product
-            features_.product_delete()
-        # Check if user chose option 6
+            features.delete_students()
         elif Ejecucion == 6:
+            features.send_csv()
+        # Check if user chose option 6
+        elif Ejecucion == 7:
             # Print a divider line for visual separation
             print("-----------------------------------------------")
             # Display thank you message to the user
