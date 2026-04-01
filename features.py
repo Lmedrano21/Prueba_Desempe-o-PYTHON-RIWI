@@ -136,7 +136,6 @@ def validate_input_student_status(user_input):
         else:
             print("ERROR: Student status input is not valid. Please enter a valid student status.")
             user_input = input("Enter the status of the Student: (a== for active, i== for inactive: ").lower()
-            
 
 def add_student():
     # Create an empty dictionary to hold the new student
@@ -357,7 +356,6 @@ def delete_students():
                 return
         except ValueError:
             print("ERROR: Please enter a valid numeric value for id.")
-
 
 def send_csv():
     for student in students:
